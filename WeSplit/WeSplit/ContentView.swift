@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 20
     
+    @FocusState private var amountIsFocused: Bool
+    
     let tipPercentages = [10, 15, 20, 25, 0]
     var totalPerPerson: Double {
         let peopleCount = Double(numberOfPeople + 2)
@@ -30,6 +32,7 @@ struct ContentView: View {
                 Section {
                     TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
                 }
                 
                 Section("How much tip do you want to leave?") {
@@ -55,6 +58,13 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("WeSplit")
+            .toolbar {
+                if amountIsFocused {
+                    Button("Done") {
+                        amountIsFocused = false
+                    }
+                }
+            }
         }
     }
 }
